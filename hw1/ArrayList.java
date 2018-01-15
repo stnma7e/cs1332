@@ -21,8 +21,7 @@ public class ArrayList<T> implements ArrayListInterface<T> {
         backingArray = (T[]) new Object[ArrayListInterface.INITIAL_CAPACITY];
     }
 
-    @Override
-    public void addAtIndex(int index, T data) {
+    void add(int index, T data) {
         if (index < 0) {
             return;
         }
@@ -31,78 +30,65 @@ public class ArrayList<T> implements ArrayListInterface<T> {
             regrowArray();
         }
 
-        for (int i = size; i >= index; i--) {
-            backingArray[i + 1] = backingArray[i];
+        if (index == size) {
+            backingArray[size] = data;
+        } else {
+            for (int i = size; i >= index; i--) {
+                backingArray[i + 1] = backingArray[i];
+            }
+            backingArray[index] = data;
         }
-        backingArray[index] = data;
 
         size += 1;
+    }
+
+    @Override
+    public void addAtIndex(int index, T data) {
+        add(index, data);
     }
 
     @Override
     public void addToFront(T data) {
-        if (size + 1 > backingArray.length) {
-            regrowArray();
-        }
-
-        for (int i = size; i >= 0; i--) {
-            backingArray[i + 1] = backingArray[i];
-        }
-        backingArray[0] = data;
-
-        size += 1;
+        add(0, data);
     }
 
     @Override
     public void addToBack(T data) {
-        if (size + 1 > backingArray.length) {
-            regrowArray();
-        }
-
-        backingArray[size] = data;
-        size += 1;
+        add(size, data);
     }
 
-    @Override
-    public T removeAtIndex(int index) {
+    T remove(int index) {
         if (index > size || index < 0) {
             return null;
         }
 
         T ret = backingArray[index];
 
-        for (int i = index + 1; i < size; i++) {
-            backingArray[i - 1] = backingArray[i];
+        if (index != size) {
+            for (int i = index + 1; i < size; i++) {
+                backingArray[i - 1] = backingArray[i];
+            }
         }
 
         size -= 1;
         backingArray[size] = null;
 
         return ret;
+    }
+
+    @Override
+    public T removeAtIndex(int index) {
+        return remove(index);
     }
 
     @Override
     public T removeFromFront() {
-        T ret = backingArray[0];
-
-        for (int i = 1; i < size ; i++) {
-            backingArray[i - 1] = backingArray[i];
-        }
-
-        size -= 1;
-        backingArray[size] = null;
-
-        return ret;
+        return remove(0);
     }
 
     @Override
     public T removeFromBack() {
-        T ret = backingArray[size];
-
-        size -= 1;
-        backingArray[size] = null;
-
-        return ret;
+        return remove(size);
     }
 
     @Override

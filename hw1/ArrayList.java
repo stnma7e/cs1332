@@ -21,19 +21,36 @@ public class ArrayList<T> implements ArrayListInterface<T> {
         backingArray = (T[]) new Object[ArrayListInterface.INITIAL_CAPACITY];
     }
 
-    void add(int index, T data) {
+    /**
+    * Helper function to add elements to the list at a certain index or at the
+    * back of the list.
+    *
+    * @param index The index where you want the new element.
+    * @param data Any object of type T.
+    * @param back Whether we are adding to the back of the list.
+    */
+    void add(int index, T data, boolean back) {
         if (index < 0) {
             return;
         }
 
-        if (size + 1 > backingArray.length) {
-            regrowArray();
+        if (index + 1 > backingArray.length) {
+            regrowArray(index + 1);
         }
 
-        if (index == size) {
-            backingArray[size] = data;
+        if (back) {
+            for (int i = backingArray.length - 1; i >= 0; i--) {
+                if (backingArray[i] != null) {
+                    backingArray[i + 1] = data;
+
+                    size  += 1;
+                    return;
+                } else if (i == 0) {
+                    backingArray[0] = data;
+                }
+            }
         } else {
-            for (int i = size; i >= index; i--) {
+            for (int i = backingArray.length - 2; i >= index; i--) {
                 backingArray[i + 1] = backingArray[i];
             }
             backingArray[index] = data;
@@ -44,28 +61,45 @@ public class ArrayList<T> implements ArrayListInterface<T> {
 
     @Override
     public void addAtIndex(int index, T data) {
-        add(index, data);
+        add(index, data, false);
     }
 
     @Override
     public void addToFront(T data) {
-        add(0, data);
+        add(0, data, false);
     }
 
     @Override
     public void addToBack(T data) {
-        add(size, data);
+        add(size, data, true);
     }
 
-    T remove(int index) {
+    /**
+    * Helper function to remove elements to the list at a certain index or from
+    * the back of the list.
+    *
+    * @param index The index where you want the new element.
+    * @param back Whether we are adding to the back of the list.
+    * @return Returns the element that was removed from the list.
+    */
+    T remove(int index, boolean back) {
         if (index > size || index < 0) {
             return null;
         }
 
         T ret = backingArray[index];
 
-        if (index != size) {
-            for (int i = index + 1; i < size; i++) {
+        if (back) {
+            for (int i = backingArray.length - 1; i >= 0; i--) {
+                if (backingArray[i] != null) {
+                    ret = backingArray[i];
+                    size -= 1;
+                    backingArray[i] = null;
+                    return ret;
+                }
+            }
+        } else {
+            for (int i = index + 1; i < backingArray.length; i++) {
                 backingArray[i - 1] = backingArray[i];
             }
         }
@@ -78,17 +112,17 @@ public class ArrayList<T> implements ArrayListInterface<T> {
 
     @Override
     public T removeAtIndex(int index) {
-        return remove(index);
+        return remove(index, false);
     }
 
     @Override
     public T removeFromFront() {
-        return remove(0);
+        return remove(0, false);
     }
 
     @Override
     public T removeFromBack() {
-        return remove(size);
+        return remove(size, true);
     }
 
     @Override
@@ -117,12 +151,21 @@ public class ArrayList<T> implements ArrayListInterface<T> {
         return backingArray;
     }
 
-    void regrowArray() {
+    /**
+    * Resizes the backingArray so that it has at least the specified capacity.
+    *
+    * @param cap The maximum capacity that you want the list to be able to hold.
+    */
+    void regrowArray(int cap) {
         T[] tmp = (T[]) new Object[backingArray.length * 2];
         for (int i = 0; i < backingArray.length; i++) {
             tmp[i] = backingArray[i];
         }
 
         this.backingArray = tmp;
+
+        if (backingArray.length < cap) {
+            regrowArray(cap);
+        }
     }
 }

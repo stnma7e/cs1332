@@ -98,4 +98,16 @@ public class ArrayListStudentTests {
         assertEquals("3a", list.get(3));
         assertEquals("4a", list.get(4));
     }
+
+    @Test(timeout = TIMEOUT)
+    public void testLargeIndex() {
+        list.addAtIndex(10, "4a");
+        list.addToBack("5a");
+
+        Object[] expected = new Object[20];
+        expected[10] = "4a";
+        expected[11] = "5a";
+
+        assertArrayEquals(expected, list.getBackingArray());
+    }
 }

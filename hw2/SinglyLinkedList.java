@@ -104,7 +104,19 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
         return null;
     }
 
+    /**
+     * Returns the LinkedListNode at the specified index.
+     *
+     * @param index the index of the requested element
+     * @return the node stored at index
+     * @throws java.lang.IndexOutOfBoundsException if index < 0 or
+     * index >= size
+     */
     LinkedListNode<T> getNode(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        
         LinkedListNode currentNode = head;
         for (int i = 0; i < index; i++) {
             currentNode = currentNode.getNext();
@@ -131,13 +143,13 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
 
     @Override
     public boolean isEmpty() {
-        return false;
-
+        return size > 0;
     }
 
     @Override
     public void clear() {
-
+        head = null;
+        size = 0;
     }
 
     @Override

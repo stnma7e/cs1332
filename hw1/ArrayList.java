@@ -28,19 +28,29 @@ public class ArrayList<T> implements ArrayListInterface<T> {
     * @param index The index where you want the new element.
     * @param data Any object of type T.
     * @param back Whether we are adding to the back of the list.
+    * @throws java.lang.IndexOutOfBoundsException if index < 0 or
+    * index >= size.
+    * @throws java.lang.IllegalArgumentException if data is null.
     */
-    void add(int index, T data, boolean back) {
-        if (index < 0) {
-            return;
+    private void add(int index, T data, boolean back) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
         }
 
-        if (index + 1 > backingArray.length) {
+        if (data == null) {
+            throw new IllegalArgumentException();
+        }
+
+        if (size + 1 > backingArray.length) {
             regrowArray(index + 1);
         }
 
         if (back) {
             for (int i = backingArray.length - 1; i >= 0; i--) {
                 if (backingArray[i] != null) {
+                    if (i + 2 > backingArray.length) {
+                        regrowArray(i + 2);
+                    }
                     backingArray[i + 1] = data;
 
                     size  += 1;
@@ -81,10 +91,12 @@ public class ArrayList<T> implements ArrayListInterface<T> {
     * @param index The index where you want the new element.
     * @param back Whether we are adding to the back of the list.
     * @return Returns the element that was removed from the list.
+    * @throws java.lang.IndexOutOfBoundsException if index < 0 or
+    * index >= size.
     */
-    T remove(int index, boolean back) {
-        if (index > size || index < 0) {
-            return null;
+    private T remove(int index, boolean back) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
         }
 
         T ret = backingArray[index];
@@ -127,6 +139,10 @@ public class ArrayList<T> implements ArrayListInterface<T> {
 
     @Override
     public T get(int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+
         return backingArray[index];
     }
 
@@ -142,7 +158,7 @@ public class ArrayList<T> implements ArrayListInterface<T> {
 
     @Override
     public void clear() {
-        size = 0;
+        backingArray = (T[]) new Object[ArrayListInterface.INITIAL_CAPACITY];
     }
 
     @Override
@@ -156,7 +172,7 @@ public class ArrayList<T> implements ArrayListInterface<T> {
     *
     * @param cap The maximum capacity that you want the list to be able to hold.
     */
-    void regrowArray(int cap) {
+    private void regrowArray(int cap) {
         T[] tmp = (T[]) new Object[backingArray.length * 2];
         for (int i = 0; i < backingArray.length; i++) {
             tmp[i] = backingArray[i];

@@ -75,16 +75,29 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
         }
 
         size -= 1;
+
+        if (size == 0) {
+            head = null;
+        }
+
         return ret;
     }
 
     @Override
     public T removeFromFront() {
+        if (size == 0) {
+            return null;
+        }
+
         return removeAtIndex(0);
     }
 
     @Override
     public T removeFromBack() {
+        if (size == 0) {
+            return null;
+        }
+    
         return removeAtIndex(size - 1);
     }
 
@@ -116,7 +129,7 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
-        
+
         LinkedListNode currentNode = head;
         for (int i = 0; i < index; i++) {
             currentNode = currentNode.getNext();

@@ -11,7 +11,8 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
     private LinkedListNode<T> head;
     private int size;
 
-    void add(T data, int index, boolean back) {
+    @Override
+    public void addAtIndex(T data, int index) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
@@ -24,32 +25,18 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
         if (head == null) {
             node.setNext(node);
             head = node;
-        } else if (back) {
-            LinkedListNode lastNode = head;
-            boolean endFound = false;
-            while (!endFound) {
-                if (lastNode.getNext() == head) {
-                    lastNode.setNext(node);
-                    endFound = true;
-                } else {
-                    lastNode = lastNode.getNext();
-                }
-            }
+        } else if (index == size) {
+            LinkedListNode last = getNode(size - 1);
+            last.setNext(node);
         } else if (index == 0) {
-            head = node;
+            node.setNext(head.getNext());
+            head.setNext(node);
 
-            LinkedListNode currentNode = head;
-            for (int i = 0; i < size; i++) {
-                currentNode = currentNode.getNext();
-            }
-
-            currentNode.setNext(head);
+            T headData = head.getData();
+            head.setData((T) node.getData());
+            node.setData((T) headData);
         } else {
-            LinkedListNode nodeToMove = head;
-            for (int i = 0; i < index - 1; i++) {
-                nodeToMove = nodeToMove.getNext();
-            }
-
+            LinkedListNode nodeToMove = getNode(index - 1);
             node.setNext(nodeToMove.getNext());
             nodeToMove.setNext(node);
         }
@@ -58,32 +45,24 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
     }
 
     @Override
-    public void addAtIndex(T data, int index) {
-        add(data, index, false);
-    }
-
-    @Override
     public void addToFront(T data) {
-        add(data, 0, false);
+        addAtIndex(data, 0);
     }
 
     @Override
     public void addToBack(T data) {
-        add(data, 0, true);
+        addAtIndex(data, size);
     }
 
-    T remove(int index, boolean back) {
-        if (index < 0 || index > size) {
+    @Override
+    public T removeAtIndex(int index) {
+        if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
 
         T ret = null;
 
-        if (back) {
-            LinkedListNode node = getNode(size - 1);
-            ret = (T) node.getNext().getData();
-            node.setNext(head);
-        } else if (index == 0) {
+        if (index == 0) {
             LinkedListNode newHead = head.getNext();
             ret = (T) head.getData();
             head.setData((T) newHead.getData());
@@ -100,18 +79,13 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
     }
 
     @Override
-    public T removeAtIndex(int index) {
-        return remove(index, false);
-    }
-
-    @Override
     public T removeFromFront() {
-        return remove(0, false);
+        return removeAtIndex(0);
     }
 
     @Override
     public T removeFromBack() {
-        return remove(size, true);
+        return removeAtIndex(size - 1);
     }
 
     @Override
@@ -120,13 +94,7 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
             throw new IllegalArgumentException();
         }
 
-        Object[] seen = new Object[size];
-        LinkedListNode currentNode = head;
-        for (int i = 0; i < size; i++) {
-            seen[i] = currentNode.getData();
-            currentNode = currentNode.getNext();
-        }
-
+        Object[] seen = toArray();
         for (int i = size - 1; i >= 0; i--) {
             if (seen[i].equals(data)) {
                 return removeAtIndex(i);

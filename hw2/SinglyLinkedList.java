@@ -25,16 +25,17 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
         if (head == null) {
             node.setNext(node);
             head = node;
-        } else if (index == size) {
-            LinkedListNode last = getNode(size - 1);
-            last.setNext(node);
-        } else if (index == 0) {
+        } else if (index == 0 || index == size) {
             node.setNext(head.getNext());
             head.setNext(node);
 
             T headData = head.getData();
             head.setData((T) node.getData());
             node.setData((T) headData);
+
+            if (index == size) {
+                head = node;
+            }
         } else {
             LinkedListNode nodeToMove = getNode(index - 1);
             node.setNext(nodeToMove.getNext());
@@ -74,7 +75,6 @@ public class SinglyLinkedList<T> implements LinkedListInterface<T> {
         }
 
         size -= 1;
-
         return ret;
     }
 

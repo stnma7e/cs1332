@@ -48,7 +48,7 @@ public class ArrayQueue<T> implements QueueInterface<T> {
         if (size == 0) {
             front = 0;
         }
-        
+
         return ret;
     }
 
@@ -69,7 +69,7 @@ public class ArrayQueue<T> implements QueueInterface<T> {
         }
 
         if (backingArray.length < size + 1) {
-            regrowArray(backingArray.length * 2);
+            regrowArray();
         }
 
         backingArray[(front + size) % backingArray.length] = data;
@@ -106,21 +106,13 @@ public class ArrayQueue<T> implements QueueInterface<T> {
         return backingArray;
     }
 
-    private void regrowArray(int cap) {
-        if (backingArray.length >= cap) {
-            return;
-        }
-
+    private void regrowArray() {
         T[] tmp = (T[]) new Object[backingArray.length * 2];
         for (int i = 0; i < backingArray.length; i++) {
-            tmp[i] = backingArray[(front + i) % tmp.length];
+            tmp[i] = backingArray[(front + i) % backingArray.length];
         }
 
         this.backingArray = tmp;
-        regrowArray(cap);
-    }
-
-    private int back() {
-        return (front + size) % backingArray.length;
+        front = 0;
     }
 }

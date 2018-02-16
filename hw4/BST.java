@@ -86,7 +86,10 @@ public class BST<T extends Comparable<? super T>> implements BSTInterface<T> {
             throw new IllegalArgumentException("data to remove cannot be null");
         }
 
-        T ret = null;
+        if (root == null) {
+            throw new java.util.NoSuchElementException(
+                    "the data to remove was not found in the tree");
+        }
 
         boolean left = false;
         BSTNode<T> grandParent = null;
@@ -121,20 +124,39 @@ public class BST<T extends Comparable<? super T>> implements BSTInterface<T> {
                     replacementNode = parent.getLeft();
                 }
 
-                if (left) {
-                    grandParent.setLeft(replacementNode);
-                } else {
-                    grandParent.setRight(replacementNode);
+                T ret = parent.getData();
+
+                if (grandParent != null) {
+                    if (left) {
+                        grandParent.setLeft(replacementNode);
+                    } else {
+                        grandParent.setRight(replacementNode);
+                    }
+                } else { // this is the root node
+                    root = replacementNode;
                 }
 
                 size -= 1;
-                return parent.getData();
+                if (size == 0) {
+                    root = null;
+                    return ret;
+                } else {
+                    return ret;
+                }
             }
         }
     }
 
     @Override
     public T get(T data) {
+        return getNode(data).getData();
+    }
+
+    private BSTNode<T> getNode(T data) {
+        if (data == null) {
+            throw new java.lang.IllegalArgumentException("data to remove was null");
+        }
+
         if (root == null) {
             throw new java.util.NoSuchElementException(
                     "the data to remove was not found in the tree");
@@ -155,14 +177,18 @@ public class BST<T extends Comparable<? super T>> implements BSTInterface<T> {
                 }
                 parent = parent.getRight();
             } else { // this is the same data, so return it
-                return parent.getData();
+                return parent;
             }
         }
     }
 
     @Override
     public boolean contains(T data) {
-        return get(data) != null;
+        try {
+            return get(data) != null;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
@@ -232,11 +258,14 @@ public class BST<T extends Comparable<? super T>> implements BSTInterface<T> {
 
     @Override
     public int distanceBetween(T data1, T data2) {
-        return 0;
+        BSTNode<T> node1 = getNode(data1);
+        BSTNode<T> node2 = getNode(data2);
+        return Math.abs(height(node1) - height(node2));
     }
 
     @Override
     public void clear() {
+        size = 0;
         root = null;
     }
 

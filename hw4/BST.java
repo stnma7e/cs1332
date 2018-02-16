@@ -49,7 +49,7 @@ public class BST<T extends Comparable<? super T>> implements BSTInterface<T> {
             throw new IllegalArgumentException("data to add cannot be null");
         }
 
-         BSTNode<T> node = new BSTNode<T>(data);
+        BSTNode<T> node = new BSTNode<T>(data);
 
         if (root == null) {
             root = node;
@@ -88,7 +88,7 @@ public class BST<T extends Comparable<? super T>> implements BSTInterface<T> {
 
         if (root == null) {
             throw new java.util.NoSuchElementException(
-                    "the data to remove was not found in the tree");
+                    "the tree is empty");
         }
 
         boolean left = false;
@@ -117,7 +117,8 @@ public class BST<T extends Comparable<? super T>> implements BSTInterface<T> {
                 BSTNode<T> replacementNode = null;
                 if (parent.getLeft() == null && parent.getRight() != null) {
                     replacementNode = parent.getRight();
-                } else if (parent.getLeft() == null && parent.getRight() == null) {
+                } else if (parent.getLeft() == null
+                        && parent.getRight() == null) {
                     // this is a leaf, so do nothing
                     // we will just delete the parent node
                 } else { // parent has two children
@@ -152,9 +153,18 @@ public class BST<T extends Comparable<? super T>> implements BSTInterface<T> {
         return getNode(data).getData();
     }
 
+    /**
+     * Returns the node in the tree matching the parameter passed in
+     *
+     * @throws IllegalArgumentException if the data is null
+     * @throws java.util.NoSuchElementException if the data is not found
+     * @param data the data to search for in the tree.
+     * @return the data in the tree equal to the parameter.
+     */
     private BSTNode<T> getNode(T data) {
         if (data == null) {
-            throw new java.lang.IllegalArgumentException("data to remove was null");
+            throw new java.lang.IllegalArgumentException(
+                "data to remove cannot be null");
         }
 
         if (root == null) {
@@ -196,6 +206,13 @@ public class BST<T extends Comparable<? super T>> implements BSTInterface<T> {
         return preorder(new ArrayList<T>(), root);
     }
 
+    /**
+     * Recursive helper function for preorder method.
+     *
+     * @param data list in which to keep traversed node data
+     * @param node node from which to start the traversal
+     * @return a preorder traversal of the tree from the node
+     */
     private List<T> preorder(List<T> data, BSTNode<T> node) {
         if (node != null) {
             data.add(node.getData());
@@ -211,6 +228,13 @@ public class BST<T extends Comparable<? super T>> implements BSTInterface<T> {
         return postorder(new ArrayList<T>(), root);
     }
 
+    /**
+     * Recursive helper function for postorder method.
+     *
+     * @param data list in which to keep traversed node data
+     * @param node node from which to start the traversal
+     * @return a postorder traversal of the tree from the node
+     */
     private List<T> postorder(List<T> data, BSTNode<T> node) {
         if (node != null) {
             postorder(data, node.getLeft());
@@ -226,6 +250,13 @@ public class BST<T extends Comparable<? super T>> implements BSTInterface<T> {
         return inorder(new ArrayList<T>(), root);
     }
 
+    /**
+     * Recursive helper function for inorder method.
+     *
+     * @param data list in which to keep traversed node data
+     * @param node node from which to start the traversal
+     * @return an inorder traversal of the tree from the node
+     */
     private List<T> inorder(List<T> data, BSTNode<T> node) {
         if (node != null) {
             inorder(data, node.getLeft());
@@ -274,6 +305,12 @@ public class BST<T extends Comparable<? super T>> implements BSTInterface<T> {
         return height(root);
     }
 
+    /**
+     * Recursive helper function for height method.
+     *
+     * @param node node from which to calculate the height
+     * @return the height of the node
+     */
     private int height(BSTNode<T> node) {
         if (node == null) {
             return -1;

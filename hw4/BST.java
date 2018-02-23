@@ -115,13 +115,15 @@ public class BST<T extends Comparable<? super T>> implements BSTInterface<T> {
                 parent = parent.getRight();
             } else { // this is the same data, so remove it
                 BSTNode<T> replacementNode = null;
-                if (parent.getLeft() == null && parent.getRight() != null) {
-                    replacementNode = parent.getRight();
-                } else if (parent.getLeft() == null
-                        && parent.getRight() == null) {
+                if (parent.getLeft() == null && parent.getRight() == null) {
                     // this is a leaf, so do nothing
                     // we will just delete the parent node
+                } else if (parent.getLeft() == null
+                        && parent.getRight() != null) {
+                    replacementNode = parent.getRight();
                 } else { // parent has two children
+                    replacementNode = getMaxChild(parent);
+                    // replacementNode.setLeft(parent.getRight());
                     replacementNode = parent.getLeft();
                 }
 
@@ -146,6 +148,21 @@ public class BST<T extends Comparable<? super T>> implements BSTInterface<T> {
                 }
             }
         }
+    }
+
+    /**
+     * Returns the greatest child of the node passed in. This will always be
+     * a leaf.
+     *
+     * @param node the node from which to start the traversal
+     * @return the greatest child of the node
+     */
+    private BSTNode<T> getMaxChild(BSTNode<T> node) {
+        if (node.getRight() == null) {
+            return node;
+        }
+
+        return getMaxChild(node.getRight());
     }
 
     @Override
@@ -291,7 +308,7 @@ public class BST<T extends Comparable<? super T>> implements BSTInterface<T> {
     public int distanceBetween(T data1, T data2) {
         BSTNode<T> node1 = getNode(data1);
         BSTNode<T> node2 = getNode(data2);
-        return Math.abs(height(node1) - height(node2));
+        return height(node1) + height(node2);
     }
 
     @Override

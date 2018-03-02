@@ -66,7 +66,6 @@ public class HashMap<K, V> implements HashMapInterface<K, V> {
                 if (node.getKey().equals(key)) {
                     // the key is already in the map, so update value
                     V returnValue = node.getValue();
-                    System.out.println("replacing " + node.getValue() + " with " + value);
                     node.setValue(value);
 
                     return returnValue;
@@ -188,7 +187,7 @@ public class HashMap<K, V> implements HashMapInterface<K, V> {
 
     @Override
     public void resizeBackingTable(int length) {
-        if (length < 0 || length < size) {
+        if (length < 1 || length < size) {
             throw new IllegalArgumentException(
                 "resize length cannot be 0 or smaller than the size of map");
         }

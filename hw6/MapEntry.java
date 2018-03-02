@@ -104,7 +104,7 @@ public class MapEntry<K, V> {
         if (getNext() == null) {
             return s;
         } else {
-            return s + getNext().toString();
+            return s + "||" + getNext().toString();
         }
     }
 }

@@ -48,7 +48,8 @@ public class PatternMatching {
         List<Integer> matchIndices = new LinkedList<Integer>();
         for (int i = 0; i <= n - m; i++) {
             int j = 0;
-            while (j < m && comparator.compare(text.charAt(i + j), pattern.charAt(j)) == 0) {
+            while (j < m && comparator.
+                    compare(text.charAt(i + j), pattern.charAt(j)) == 0) {
                 j++;
             }
 
@@ -101,7 +102,8 @@ public class PatternMatching {
 
         int j = 0;
         for (int i = 0; i <= n - m; i++) {
-            while (j < m && comparator.compare(text.charAt(i + j), pattern.charAt(j)) == 0) {
+            while (j < m && comparator
+                    .compare(text.charAt(i + j), pattern.charAt(j)) == 0) {
                 j++;
             }
 
@@ -111,7 +113,7 @@ public class PatternMatching {
             if (j > 0) {
                 // align pattern such that pattern.charAt(failureTable[j - 1])
                 // is aligned with mismatched character in text
-                int next = failureTable[j -1];
+                int next = failureTable[j - 1];
                 i += j - next - 1;
                 j = next;
             }
@@ -217,15 +219,16 @@ public class PatternMatching {
         int i = 0;
         while (i <= n - m) {
             int j = m - 1;
-            while (j >= 0 && comparator.compare(text.charAt(i + j), pattern.charAt(j)) == 0) {
+            while (j >= 0 && comparator
+                    .compare(text.charAt(i + j), pattern.charAt(j)) == 0) {
                 j--;
             }
             if (j == -1) {
                 matchIndices.add(i);
                 i++;
             } else {
-                Integer Last = lastTable.get(text.charAt(i + j));
-                int last = Last == null ? -1 : Last;
+                Integer maybeLast = lastTable.get(text.charAt(i + j));
+                int last = maybeLast == null ? -1 : maybeLast;
                 if (last < j) {
                     i += j - last;
                 } else {

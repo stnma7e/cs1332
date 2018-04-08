@@ -1,0 +1,39 @@
+big O: worst case
+
+bst
+    adding: n
+    removing: n
+    searching: n
+
+avl
+    adding: logn
+    removing: logn
+    searching: logn
+
+heap
+    adding: logn
+    removing: logn (for resizing)
+    seraching: n
+
+hashmap (ext chaining)
+if all keys give the same hash :|
+    adding: n
+    removing: n
+    searching: n
+
+hashmap (quadratic probing)
+can get stuck in quadratic loop of terms; set max probes, n, and stop after passing that
+    adding: n
+    removing: n
+    searching: n
+
+skiplists
+can get stuck in infinite expansion of levels; set max levels, n, and stop after creating levels after that
+    adding: n
+    removing: n
+    searching: n
+
+2-4 tree
+    adding: logn
+    removing: logn (not on exam 2!)
+    searching: logn

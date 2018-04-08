@@ -1,0 +1,9 @@
+need two structures: queue, visitedSet
+
+enqueue entry point
+
+for each node in queue
+    if not in visited set
+        add node to visited set
+        enqueue adjecent vertices not in visited set
+    dequeue node

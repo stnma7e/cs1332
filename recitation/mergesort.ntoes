@@ -1,0 +1,24 @@
+for lsd radix add 9 probably to make sure no negative index; buckets go from 0-18 accordingly
+
+mergesort
+    if arr len is 1
+        return arr
+    left = mergesort(left)
+    right = mergesort(right)
+    return merge(left; right)
+
+merge
+    new: arr[left.len() + right.len()]
+    index L, R, New
+    while not at end of either array
+        compare smallest element
+        append smallest element
+        New++
+        increment pointer to subarray you just removed from
+    while left not empty
+        add elemnts to merge
+        L++
+    while right not empty
+        add elemnts to merge
+        R++
+    return new

@@ -1,0 +1,1 @@
+Heap remove: move last value to root; then choose correct child to replace going down the tree

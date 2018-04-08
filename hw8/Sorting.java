@@ -189,7 +189,7 @@ public class Sorting {
             throw new IllegalArgumentException("comparator to sort is null");
         }
 
-        quickSort(arr, 0, arr.length, comparator, rand);
+        quickSort(arr, 0, arr.length - 1, comparator, rand);
 
         boolean y = true;
     }
@@ -206,29 +206,28 @@ public class Sorting {
      */
     private static <T> void quickSort(T[] arr, int left, int right,
                                       Comparator<T> comparator, Random rand) {
-
         if (right - left < 1) {
             return;
         }
 
         int pivotIdx = left + rand.nextInt(right - left);
         T pivot = arr[pivotIdx];
-        int l = left;
-        int r = right - 1;
+        int l = left + 1;
+        int r = right;
         // swap pivot
         T tmp = arr[left];
         arr[left] = arr[pivotIdx];
         arr[pivotIdx] = tmp;
 
-        while (l <= r) {
-            while (l <= r && comparator.compare(arr[l], pivot) <= 0) {
+        while (l < r) {
+            while (l <= r && comparator.compare(arr[l], pivot) < 0) {
                 l++;
             }
-            while (r >= l && comparator.compare(arr[r], pivot) >= 0) {
+            while (r >= l && comparator.compare(arr[r], pivot) > 0) {
                 r--;
             }
 
-            if (l <= r) {
+            if (l < r) { // swap left and right markers
                 tmp = arr[l];
                 arr[l] = arr[r];
                 arr[r] = tmp;

@@ -1,0 +1,12 @@
+for non-negative edges
+
+priority queues: priority by edge weights
+hashmap: keep edge weights stored
+
+starting with A:
+add (A, 0) to map
+add A's neighbors to priority queue with edge weights
+dequeue first thing in queue
+    add the edge you dequeued to the hashmap with the total weight it takes to get there
+    add it's neighbors to queue with edge weights plus the weight it took to get to the current node
+        this is stored in the hashmap

@@ -1,4 +1,12 @@
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Set;
+import java.util.Stack;
 
 /**
  * Your implementation of various different graph algorithms.
@@ -127,6 +135,20 @@ public class GraphAlgorithms {
         return dfs(start, graph, visitedSet, q, searchedNodes);
     }
 
+
+    /**
+     * Recursive helper method for depth first search.
+     *
+     * @throws IllegalArgumentException if any input
+     *  is null, or if {@code start} doesn't exist in the graph
+     * @param <T> the generic typing of the data
+     * @param start the vertex to begin the dfs on
+     * @param graph the graph to search through
+     * @param visitedSet the set of nodes that have already been visited
+     * @param q the stack that holds the next nodes to traverse
+     * @param searchedNodes the set of nodes to return from the search
+     * @return list of vertices in visited order
+     */
     private static <T> List<Vertex<T>> dfs(Vertex<T> start,
                                            Graph<T> graph,
                                            HashSet<Vertex<T>> visitedSet,
@@ -289,7 +311,8 @@ public class GraphAlgorithms {
             if (!visitedSet.contains((edge.getV()))) {
                 visitedSet.add(edge.getV());
                 mst.add(edge);
-                mst.add(new Edge<T>(edge.getV(), edge.getU(), edge.getWeight()));
+                mst.add(new Edge<T>(edge.getV(), edge.getU(),
+                        edge.getWeight()));
                 q.addAll(graph.getAdjList().get(edge.getV()));
             }
         }
@@ -301,38 +324,3 @@ public class GraphAlgorithms {
         return mst;
     }
 }
-
-/*
-HashMap<Vertex<T>, Integer> distMap = new HashMap<Vertex<T>, Integer>();
-        PriorityQueue<Vertex<T>> q = new PriorityQueue<>(graph.getVertices().size(), new Comparator<Vertex<T>>() {
-            @Override
-            public int compare(Vertex<T> tVertex, Vertex<T> t1) {
-                return distMap.get(tVertex) - distMap.get(t1);
-            }
-        });
-
-        for (Vertex<T> v : graph.getVertices()) {
-            distMap.put(v, Integer.MAX_VALUE);
-        }
-        distMap.put(start, 0);
-
-        q.addAll(graph.getVertices());
-        while (q.peek() != null) {
-            Vertex<T> v = q.poll();
-            for (Edge<T> edge : graph.getAdjList().get(v)) {
-                Vertex<T> neighbor = edge.getV();
-                int ogDist = distMap.get(v);
-                int dist = edge.getWeight();
-                if (ogDist != Integer.MAX_VALUE) {
-                    dist += ogDist;
-                } else {
-                    dist = Integer.MAX_VALUE;
-                }
-                if (dist < distMap.get(neighbor)) {
-                    distMap.put(neighbor, dist);
-                }
-            }
-        }
-
-        return distMap;
- */

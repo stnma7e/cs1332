@@ -70,7 +70,6 @@ public class AVLStudentTests {
         avlTree.add(856);
         avlTree.add(toBeRemoved);
         avlTree.add(477);
-        avlTree.levelOrder(avlTree.getRoot());
 
         assertSame(toBeRemoved, avlTree.remove(new Integer(526)));
 

@@ -49,6 +49,7 @@ public class ArrayQueueTest {
         for (int i = 15; i < 100; i++) {
             myAQueue.enqueue(i);
         }
+        printQueue(myAQueue);
         assertEquals(97, myAQueue.size());
         for (int i = 3; i < 100; i++) {
             assertEquals(Integer.valueOf(i), myAQueue.dequeue());
@@ -71,6 +72,31 @@ public class ArrayQueueTest {
 
         }
     }
+    private void printQueue(ArrayQueue<Integer> queue) {
+        Object[] backingArray = ((ArrayQueue<Integer>) queue).getBackingArray();
+        System.out.print("[ ");
+        for (int i = 0; i < backingArray.length; i++) {
+            if (backingArray[i] == null)
+                System.out.print("null ");
+            else
+                System.out.print(backingArray[i] + " ");
+        }
+        System.out.println("]");
+    }
+
+    private void printQueue(LinkedQueue<Integer> queue) {
+        LinkedNode<Integer> element = ((LinkedQueue<Integer>) queue).getHead();
+        System.out.print("[ ");
+        if (queue.size() != 0) {
+            for (int i = 0; i < queue.size(); i++) {
+                System.out.print(element.getData() + " ");
+                element = element.getNext();
+            }
+        }
+        System.out.print("]");
+        System.out.println();
+    }
+
     @Test
     public void linkedQueueTest() {
         for (int i = 0; i < 11; i++) {

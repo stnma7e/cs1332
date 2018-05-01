@@ -99,6 +99,7 @@ public class ArrayListStudentTests {
         assertEquals("4a", list.get(4));
     }
 
+    /*
     @Test(timeout = TIMEOUT)
     public void testLargeIndex() {
         list.addAtIndex(10, "4a");
@@ -110,4 +111,17 @@ public class ArrayListStudentTests {
 
         assertArrayEquals(expected, list.getBackingArray());
     }
+
+    @Test(timeout = TIMEOUT)
+    public void testLastIndexAddition() {
+        list.addAtIndex(19, "4a");
+        list.addToBack("5a");
+
+        Object[] expected = new Object[40];
+        expected[19] = "4a";
+        expected[20] = "5a";
+
+        assertArrayEquals(expected, list.getBackingArray());
+    }
+    */
 }
